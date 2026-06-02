@@ -156,6 +156,60 @@ export interface PageResponse<T> {
   last: boolean;
   empty: boolean;
 }
+
+export interface TableColumn<T> {
+  key: keyof T;
+  label: string;
+  render?: (value: any, item: T) => React.ReactNode;
+}
+
+export interface TableAction<T> {
+  label: string;
+  onClick: (item: T) => void;
+  variant?: 'primary' | 'secondary' | 'danger';
+}
+
+export interface RouteConfig {
+  path: string;
+  name: string;
+  component: React.ComponentType;
+}
+
+export type RouteKey = 'HOME' | 'EVENTOS' | 'JOGOS' | 'PARTICIPANTES' | 'EMPRESTIMOS' | 'LOGIN';
+
+export interface UIConstants {
+  HEADER_HEIGHT: number;
+  SCROLL_THRESHOLD: number;
+  SEARCH_DEBOUNCE_DELAY: number;
+}
+
+export interface AppMessages {
+  LOGIN_PLACEHOLDER: string;
+  CRIAR_EVENTO: string;
+  ADICIONAR_PARTICIPANTE: string;
+  CONSULTAR_JOGO: string;
+  REGISTRAR_EMPRESTIMO: string;
+  CONFIRM_RETURN: string;
+  SEARCH_PLACEHOLDER: string;
+}
+
+export interface SearchIconProps {
+  width?: number;
+  height?: number;
+  stroke?: string;
+  strokeWidth?: number;
+}
+
+export interface ComingSoonProps {
+  pageName: string;
+}
+
+export interface PageHeaderProps {
+  title: string;
+  buttonText?: string;
+  onButtonClick?: () => void;
+  showButton?: boolean;
+}
 ```
 
 ### Notas sobre as Interfaces
@@ -164,6 +218,16 @@ export interface PageResponse<T> {
 - **Emprestimo** possui campos computados (`jogo`, `participante`, `horario`) preenchidos pelo servico de normalizacao, nao persisti dos no backend.
 - **Jogo** contem timestamps `criadoQuando` e `atualizadoQuando` retornados pelo backend.
 - **PageResponse** e generica e usada por todas as entidades com paginacao.
+
+### Campos de Configuracao
+
+Arquivos em `src/shared/constants/` que definem a configuracao de campos para modais de detalhe, edicao e criacao:
+
+- **detailFields.ts** — `jogoDetailFields`, `participanteDetailFields`, `eventoDetailFields`, `emprestimoDetailFields`, `instituicaoDetailFields`
+- **editFields.ts** — `jogoEditFields`, `participanteEditFields`, `eventoEditFields`, `emprestimoEditFields`, `instituicaoEditFields`
+- **createFields.ts** — `jogoCreateFields`, `participanteCreateFields`, `eventoCreateFields`, `emprestimoCreateFields`, `instituicaoCreateFields`
+
+Cada configuracao define os campos exibidos no modal correspondente, com tipo, label e ordem de exibicao.
 
 ## Hooks de Dados
 
@@ -351,6 +415,71 @@ Arquivo: `src/shared/utils/validations.ts`
 ### VALIDATION_MESSAGES
 
 Mensagens de erro centralizadas para formularios, incluindo validacoes de nome, email, horario, documento, RA, jogo, instituicao e data.
+
+## Constantes e Configuracoes
+
+Arquivo: `src/shared/constants/index.ts`
+
+### ROUTES
+
+Objeto com os paths das 7 rotas da aplicacao, usado em `App.tsx` e `Header`:
+
+```typescript
+export const ROUTES = {
+  HOME: "/",
+  INSTITUICOES: "/instituicoes",
+  EVENTOS: "/eventos",
+  JOGOS: "/jogos",
+  PARTICIPANTES: "/participantes",
+  EMPRESTIMOS: "/emprestimos",
+  LOGIN: "/login",
+} as const;
+
+// Tipos derivados
+type RouteValues = typeof ROUTES[keyof typeof ROUTES];
+type RouteKeys = keyof typeof ROUTES;
+```
+
+### UI_CONSTANTS
+
+Constantes de interface do usuario:
+
+```typescript
+export const UI_CONSTANTS: UIConstants = {
+  HEADER_HEIGHT: 64,
+  SCROLL_THRESHOLD: 64,
+  SEARCH_DEBOUNCE_DELAY: 300,
+};
+```
+
+### MESSAGES
+
+Mensagens da aplicacao, exibidas em componentes de placeholder e confirmacao:
+
+```typescript
+export const MESSAGES: AppMessages = {
+  LOGIN_PLACEHOLDER: "Funcionalidade de login sera implementada",
+  CRIAR_EVENTO: "Funcionalidade de Criar Evento sera implementada",
+  ADICIONAR_PARTICIPANTE: "Funcionalidade de Adicionar Participante sera implementada",
+  CONSULTAR_JOGO: "Funcionalidade de Consultar Jogo sera implementada",
+  REGISTRAR_EMPRESTIMO: "Funcionalidade de Registrar Emprestimo sera implementada",
+  CONFIRM_RETURN: "Confirmar devolucao?",
+  SEARCH_PLACEHOLDER: "Buscar por jogo ou participante...",
+};
+```
+
+### API_BASE_URL
+
+URL base da API, lida da variavel de ambiente `REACT_APP_API_BASE_URL` com fallback para `http://localhost:8080/api`. Um aviso e exibido no console em desenvolvimento quando a variavel nao esta definida.
+
+```typescript
+export const API_BASE_URL: string =
+  (process.env.REACT_APP_API_BASE_URL as string) || 'http://localhost:8080/api';
+```
+
+### Re-exportacoes
+
+O arquivo `src/shared/constants/index.ts` tambem re-exporta as configuracoes de campos e colunas de tabelas atraves dos modulos `detailFields`, `editFields`, `createFields` e `tableColumns`.
 
 ## Dados Mockados
 

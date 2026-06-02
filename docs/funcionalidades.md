@@ -17,11 +17,11 @@
 
 ## Home
 
-Dashboard principal exibido após o login.
+Dashboard principal (página inicial do sistema).
 
 ### O que renderiza
 
-- **WelcomeSection**: Saudação ao usuário logado.
+- **WelcomeSection**: Saudação ao usuário.
 - **QuickActions**: Três botões de acesso rápido:
   - Adicionar Participante
   - Consultar Jogo
@@ -41,7 +41,10 @@ Dashboard principal exibido após o login.
 
 ### Modais utilizados
 
-Nenhum. As ações redirecionam para a página de Empréstimos ou abrem modais inline.
+1. **CreateModal**: Registro de empréstimo (via QuickActions).
+2. **ConsultModal**: Consulta de jogos (via QuickActions).
+3. **ConfirmModal (devolução)**: Confirmação antes de marcar devolução.
+4. **ConfirmModal (exclusão)**: Confirmação antes de excluir empréstimo ativo.
 
 ---
 
@@ -102,7 +105,7 @@ CRUD com criação inline de instituição.
 | nome | Texto | Obrigatório |
 | email | Texto | Validação via regex |
 | documento | Texto (CPF) | Obrigatório |
-| ra | Texto | Obrigatório |
+| ra | Texto | Opcional (obrigatório apenas se instituição selecionada) |
 | instituicao | Autocomplete | Seleção de instituição existente |
 
 ### Validações especiais

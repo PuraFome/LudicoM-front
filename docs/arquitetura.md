@@ -12,25 +12,33 @@ public/index.html
 
 O `React.StrictMode` foi **intencionalmente desabilitado** para evitar dupla montagem que causava requisicoes canceladas.
 
+### ResizeObserver para Header Height
+
+O `App.tsx` possui um `useEffect` que observa dinamicamente a altura do `<header>` usando `ResizeObserver` (com fallback para `window.resize`) e atualiza a variavel CSS `--header-height` no `<html>`. Isso garante que o `main-content` sempre respeite o espaco ocupado pelo header, mesmo em mudancas de layout responsivo ou quebra de linha.
+
 ## Componente Raiz (App.tsx)
 
 ```
 <ToastProvider>                    ← Contexto de notificacoes
   <Router basename="/LudicoM-front/">
-    <AnimatedBackground />         ← Fundo animado decorativo
-    <Header />                     ← Barra de navegacao principal
-    <Suspense fallback="Carregando...">
-      <Routes>
-        <Route path="/"            → Home />
-        <Route path="/jogos"       → Jogos />
-        <Route path="/participantes" → Participantes />
-        <Route path="/instituicoes"  → Instituicoes />
-        <Route path="/eventos"     → Eventos />
-        <Route path="/emprestimos" → Emprestimos />
-        <Route path="/login"       → Login />
-      </Routes>
-    </Suspense>
-    <Footer />
+    <div className="app">
+      <AnimatedBackground />         ← Fundo animado decorativo
+      <Header />                     ← Barra de navegacao principal
+      <main className="main-content">
+        <Suspense fallback={<div className="lazy-fallback">Carregando...</div>}>
+          <Routes>
+            <Route path="/"            → Home />
+            <Route path="/jogos"       → Jogos />
+            <Route path="/participantes" → Participantes />
+            <Route path="/instituicoes"  → Instituicoes />
+            <Route path="/eventos"     → Eventos />
+            <Route path="/emprestimos" → Emprestimos />
+            <Route path="/login"       → Login />
+          </Routes>
+        </Suspense>
+      </main>
+      <Footer />
+    </div>
   </Router>
 </ToastProvider>
 ```
@@ -53,19 +61,21 @@ Pagina
 
 ## Roteamento
 
-| Path | Componente | Lazy Load | Descricao |
-|---|---|---|---|
-| `/` | Home | Sim | Dashboard |
-| `/jogos` | Jogos | Sim | CRUD jogos |
-| `/participantes` | Participantes | Sim | CRUD participantes |
-| `/instituicoes` | Instituicoes | Sim | CRUD instituicoes |
-| `/eventos` | Eventos | Sim | CRUD eventos |
-| `/emprestimos` | Emprestimos | Sim | CRUD emprestimos (2 abas) |
-| `/login` | Login | Sim | Placeholder |
+Os paths sao definidos como constantes tipadas em `src/shared/constants/index.ts` (`ROUTES.HOME`, `ROUTES.JOGOS`, etc.) e usados tanto no `App.tsx` quanto nas navegacoes do `Header`.
+
+| Path | Constante | Componente | Lazy Load | Descricao |
+|---|---|---|---|---|
+| `/` | `ROUTES.HOME` | Home | Sim | Dashboard |
+| `/jogos` | `ROUTES.JOGOS` | Jogos | Sim | CRUD jogos |
+| `/participantes` | `ROUTES.PARTICIPANTES` | Participantes | Sim | CRUD participantes |
+| `/instituicoes` | `ROUTES.INSTITUICOES` | Instituicoes | Sim | CRUD instituicoes |
+| `/eventos` | `ROUTES.EVENTOS` | Eventos | Sim | CRUD eventos |
+| `/emprestimos` | `ROUTES.EMPRESTIMOS` | Emprestimos | Sim | CRUD emprestimos (2 abas) |
+| `/login` | `ROUTES.LOGIN` | Login | Sim | Placeholder |
 
 ## Gerenciamento de Estado
 
-- **Context API**: autenticacao (AuthContext), notificacoes (ToastContext)
+- **Context API**: notificacoes (ToastContext) — autenticacao via Basic Auth em `authService.ts` (sem Context API)
 - **Estado local (useState/useReducer)**: paginas CRUD individuais, controle de modais e formularios
 - **Cache externo**: sessionStorage para jogos (5 minutos) e emprestimos (2 minutos)
 
@@ -98,10 +108,11 @@ O design system e baseado em variaveis CSS customizadas com uma paleta de cores 
 | outline | Borda | Acao leve |
 | ghost | Transparente | Contextual |
 
-### Responsividade — 5 breakpoints
+### Responsividade — 6 breakpoints
 
 | Breakpoint | Alvo | Principais mudancas |
 |---|---|---|
+| <= 1440px | Desktop Large | Padding em acoes rapidas e tabela |
 | <= 1200px | Desktop | Nav gap, titulos menores |
 | <= 992px | Tablet | Nav compacta, tabela com scroll |
 | <= 768px | Tablet Pequeno | Header wrap, fontes menores |

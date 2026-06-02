@@ -37,7 +37,7 @@ Este repositório contém o **frontend** da aplicação, uma SPA (Single Page Ap
 | 🏠 **Dashboard Home** — Ações rápidas, empréstimos ativos | ✅ Completo | [funcionalidades.md](funcionalidades.md#home) |
 | 🔐 **Login** — Autenticação de usuários | ⏳ Placeholder | — |
 | 🎨 **Tema Dark/Light** — Alternância entre temas | ✅ Completo | [componentes.md](componentes.md#layout) |
-| 📱 **Design Responsivo** — 5 breakpoints (1440px a 480px) | ✅ Completo | [arquitetura.md](arquitetura.md#estilos) |
+| 📱 **Design Responsivo** — 6 breakpoints (1440px a 480px) | ✅ Completo | [arquitetura.md](arquitetura.md#estilos) |
 | 🔔 **Sistema de Notificações Toast** | ✅ Completo | [componentes.md](componentes.md#common) |
 | 🔍 **Busca com Debounce + Paginação** (300ms) | ✅ Completo | [funcionalidades.md](funcionalidades.md#padrões-comuns) |
 | 💾 **Cache SessionStorage** (jogos 5min, empréstimos 2min) | ✅ Completo | [servicos-api.md](servicos-api.md#hooks-de-dados) |
