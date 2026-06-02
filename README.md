@@ -170,6 +170,20 @@ REACT_APP_API_BASE_URL=http://localhost:8080/api
 
 ---
 
+## 📚 Documentação
+
+Documentação detalhada disponível na pasta [`docs/`](docs/):
+
+| Documento | Descrição |
+|---|---|
+| [Visão Geral](docs/index.md) | Funcionalidades, tecnologias, como executar |
+| [Arquitetura](docs/arquitetura.md) | Bootstrap, roteamento, providers, estilos |
+| [Funcionalidades](docs/funcionalidades.md) | CRUD por entidade, matriz de operações |
+| [Componentes](docs/componentes.md) | Inventário de 21 componentes com props |
+| [API e Serviços](docs/servicos-api.md) | Endpoints, hooks, tipos, utilitários |
+
+---
+
 ## 🧪 Scripts Disponíveis
 
 ```bash
